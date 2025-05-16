@@ -99,11 +99,17 @@ public class Libreria extends JFrame implements ActionListener {
 	}
 	protected void actionPerformedBtnProcesar(ActionEvent e) {
 		//Declaracion de variables
+		double importeCompra,importeDescuento,importePagar;
+		int cantidad,lapiceros;
 		//Entrada de datos
-		leer
+		cantidad=Integer.parseInt(txtCantidad.getText());
 		//Proceso de cálculo
+		importeCompra=calculoImporteCompra(cantidad);
+		importeDescuento=calculoImporteDescuento(cantidad,importeCompra);
+		importePagar=calculoImportePagar(importeCompra,importeDescuento);
+		lapiceros=calculoLapiceros(importePagar);
 		//Salida de resultados
-		imprimir
+		imprimir(importeCompra,importeDescuento,importePagar,lapiceros);
 	}
 	double calculoImporteCompra(int cantidad) {
 		int marca=cboMarca.getSelectedIndex();
@@ -115,5 +121,30 @@ public class Libreria extends JFrame implements ActionListener {
 		default: precio=4.55;
 		}
 		return precio*cantidad;
+	}
+	double calculoImporteDescuento(int cantidad, double importeCompra) {
+		double descuento;
+		if (cantidad<12) descuento=0.075;
+		else if (cantidad<24) descuento=0.095;
+		else if (cantidad<36) descuento=0.115;
+		else descuento=0.135;
+		return descuento*importeCompra;
+	}
+	double calculoImportePagar(double importeCompra, double importeDescuento) {
+		return importeCompra-importeDescuento;
+	}
+	int calculoLapiceros(double importePagar) {
+		int lapiceros;
+		if (importePagar<100) lapiceros=2;
+		else if (importePagar<125) lapiceros=3;
+		else if (importePagar<150) lapiceros=4;
+		else lapiceros=5;
+		return lapiceros;
+	}
+	void imprimir(double importeCompra, double importeDescuento, double importePagar, int lapiceros) {
+		txtS.setText("Importe de la compra: "+importeCompra);
+		txtS.append("\nImporte del descuento: "+importeDescuento);
+		txtS.append("\nImporte a pagar: "+importePagar);
+		txtS.append("\nCantidad de lapiceros de regalo: "+lapiceros);
 	}
 }
